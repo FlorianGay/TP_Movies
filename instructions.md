@@ -1,0 +1,3 @@
+- En tant qu'utilisateur, je veux pouvoir rechercher une recette par un mot clef
+- Utiliser une librairie CSS (comment l'installer, la doc)
+- utiliser une API, générer clef API
