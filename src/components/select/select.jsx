@@ -41,7 +41,9 @@ export default function BasicSelect(props) {
   }
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <>
+      {props.list ? (
+        <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Catégorie</InputLabel>
         <Select
@@ -59,5 +61,8 @@ export default function BasicSelect(props) {
         </Select>
       </FormControl>
     </Box>
+      ) : <p>Loading...</p>}
+    </>
+    
   )
 }

@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import MovieCard from './components/card/card'
 import BasicSelect from './components/select/select'
 import { Link } from 'react-router-dom'
+import { MovieContext } from './context/movieContext'
+import { MovieCategoryContext } from './context/movieCategoryContext'
 
 function App() {
   const config = {
@@ -14,28 +16,32 @@ function App() {
     },
   }
 
-  const [movies, setMovies] = useState(null)
+  // const [movies, setMovies] = useState(null)
   const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
+   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState(null)
   const [filteredMovie, setFilteredMovie] = useState('')
-  const [movieCategory, setMovieCategory] = useState(null)
+  // const [movieCategory, setMovieCategory] = useState(null)
 
-  const fetchCategory = async () => {
-    try {
-      const response = await axios.get(
-        'https://api.themoviedb.org/3/genre/movie/list?language=fr',
-        config
-      )
-      setMovieCategory(response.data)
-      console.log(movieCategory)
-    } catch (err) {
-      console.log(err)
-      setError(err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [moviesList, setMoviesList] = useContext(MovieContext)
+  console.log(moviesList)
+  const [moviesCategories, setMoviesCategories] = useContext(MovieCategoryContext)
+  console.log(moviesCategories)
+  // const fetchCategory = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       'https://api.themoviedb.org/3/genre/movie/list?language=fr',
+  //       config
+  //     )
+  //     setMovieCategory(response.data)
+      
+  //   } catch (err) {
+      
+  //     setError(err)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const fetchMovies = async (value) => {
     try {
@@ -43,7 +49,7 @@ function App() {
         `https://api.themoviedb.org/3/search/movie?query=${value}&include_adult=false&language=en-US&page=1`,
         config
       )
-      console.log(response)
+     
       setFilteredMovie(response.data.results)
     } catch (err) {
       setError(err)
@@ -52,21 +58,21 @@ function App() {
     }
   }
 
-  const fetchListMovies = async () => {
-    try {
-      const response = await axios.get(
-        'https://api.themoviedb.org/3/movie/popular?language=fr-FR&page=1',
-        config
-      )
-      setMovies(response.data.results)
-      console.log(movies)
-    } catch (err) {
-      console.log(err)
-      setError(err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const fetchListMovies = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       'https://api.themoviedb.org/3/movie/popular?language=fr-FR&page=1',
+  //       config
+  //     )
+  //     setMovies(response.data.results)
+  //     console.log(movies)
+  //   } catch (err) {
+  //     console.log(err)
+  //     setError(err)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const inputValue = (e) => {
     setSearch(e.target.value)
@@ -80,21 +86,20 @@ function App() {
     console.log(filteredMovie)
   }
 
-  useEffect(() => {
-    fetchListMovies()
-  }, [])
+  // useEffect(() => {
+  //   fetchListMovies()
+  // }, [])
 
-  useEffect(() => {
-    fetchCategory()
-  }, [])
+  // useEffect(() => {
+  //   fetchCategory()
+  // }, [])
 
   const handleFilteredMoviesChange = (newFilteredList) => {
-    setFilteredMovie(newFilteredList);
-  };
-
+    setFilteredMovie(newFilteredList)
+  }
 
   if (error) return <p>{error}</p>
-  if (loading) return <p>Loading...</p>
+  // if (loading) return <p>Loading...</p>
 
   return (
     <>
@@ -104,11 +109,14 @@ function App() {
         <input type="submit" />
       </form>
       <form>
-      <label htmlFor="searchCategory">Recherchez une catégorie: </label>
-      <BasicSelect list={movieCategory} onFilteredMoviesChange={handleFilteredMoviesChange}/>
-    </form>
+        <label htmlFor="searchCategory">Recherchez une catégorie: </label>
+        <BasicSelect
+          list={moviesCategories}
+          onFilteredMoviesChange={handleFilteredMoviesChange}
+        />
+      </form>
       <h1>Liste de films :</h1>
-      {(filteredMovie != (null || '') ? filteredMovie : movies).map((movie) => (
+      {(filteredMovie != (null || '') ? filteredMovie : moviesList).map((movie) => (
         <Link to={`/movie/${movie.id}`} key={movie.id}>
           <MovieCard {...movie} />
         </Link>

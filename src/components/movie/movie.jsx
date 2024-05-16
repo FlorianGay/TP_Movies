@@ -14,7 +14,7 @@ function Movie() {
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlODU2MDEwMmM2OWNkOTQ2NWUwZTU3ZWQ5ZjYzYTU3OCIsInN1YiI6IjY2NDM0Y2ZlODg3NDhjMGFkNmNiNTkwOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.F24OrtuNZl8hoqm7GM6ol07GlCzPn9373rOdtIMxn2g',
     },
   }
-   
+
   const [movie, setMovie] = useState(null)
 
   let { id } = useParams()
@@ -27,12 +27,12 @@ function Movie() {
         config
       )
       console.log(response.data)
-      setMovie(response.data) 
+      setMovie(response.data)
       console.log(movie)
     } catch (err) {
       console.err(err)
     }
-  } 
+  }
 
   useEffect(() => {
     fetchMovie()
@@ -40,30 +40,29 @@ function Movie() {
 
   return (
     <>
-    <Link to={'/'}> Retour</Link>
-    {movie && (
+      <Link to={'/'}> Retour</Link>
+      {movie && (
         <Card sx={{ maxWidth: 345, marginBottom: 15, display: 'flex' }}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            height="140"
-            image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-            alt="green iguana"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {movie.title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {movie.overview}
-            </Typography>
-            <Typography>{`${movie.budget} $`}</Typography>
-            <Typography>{`Note moyenne : ${movie.vote_average}`}</Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    )}
-      
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              height="140"
+              image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+              alt="green iguana"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {movie.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {movie.overview}
+              </Typography>
+              <Typography>{`${movie.budget} $`}</Typography>
+              <Typography>{`Note moyenne : ${movie.vote_average}`}</Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      )}
     </>
   )
 }
